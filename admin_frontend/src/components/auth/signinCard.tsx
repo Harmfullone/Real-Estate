@@ -1,9 +1,23 @@
+import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { QRCodeSVG } from "qrcode.react"; // Import the QR code component
+import { LockKeyholeOpen, Mail, ArrowLeft } from "lucide-react";
+
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { LockKeyholeOpen, Mail } from "lucide-react";
+import {
+    InputOTP,
+    InputOTPGroup,
+    InputOTPSlot,
+    InputOTPSeparator
+} from "@/components/ui/input-otp";
+import { REGEXP_ONLY_DIGITS } from "input-otp";
 
+
+type AuthStep = "LOGIN" | "SETUP_2FA" | "VERIFY_2FA";
 export const SigninCard = () => {
+    const router = useRouter();
     return (
         <div className="flex items-center justify-center">
             <div className="w-full max-w-md">
