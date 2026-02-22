@@ -251,7 +251,48 @@ export const changeStatus = z.object({
     status: z.enum(StatusEnum)
 });
 
+// Filter Properties Schema
+export const filterPropertiesSchema = z.object({
+    // Property Category (can select multiple)
+    category: z.array(z.enum(categoryEnum)).optional(),
+    
+    // Property Type (can select multiple)
+    propertyType: z.array(z.enum(propertyTypeEnum)).optional(),
+    
+    // Furnishing Status (can select multiple)
+    furnishingStatus: z.array(z.enum(furnishingStatusEnum)).optional(),
+    
+    // Price Range
+    priceMin: z.coerce.number().positive().optional(),
+    priceMax: z.coerce.number().positive().optional(),
+    
+    // Location Filters
+    state: z.string().optional(),
+    city: z.string().optional(),
+    locality: z.string().optional(),
+    
+    // Additional Filters
+    availabilityStatus: z.array(z.enum(availabilityStatusEnum)).optional(),
+    ageOfProperty: z.array(z.enum(ageOfPropertyEnum)).optional(),
+    numberOfRooms: z.coerce.number().int().min(0).optional(),
+    numberOfBathrooms: z.coerce.number().int().min(0).optional(),
+    propertyFacing: z.array(z.enum(propertyFacingEnum)).optional(),
+    
+    // Carpet Area filters
+    carpetAreaMin: z.coerce.number().positive().optional(),
+    carpetAreaMax: z.coerce.number().positive().optional(),
+    carpetAreaUnit: z.enum(carpetAreaUnitEnum).optional(),
+    
+    // Sorting
+    sortBy: z.enum(['price_asc', 'price_desc', 'created_desc', 'created_asc']).default('created_desc'),
+    
+    // Pagination
+    page: z.coerce.number().int().min(1).default(1),
+    limit: z.coerce.number().int().min(1).max(100).default(10),
+});
+
 export type addPropertyInput = z.infer<typeof addPropertySchema>;
 export type addDraftPropertyInput = z.infer<typeof addDraftPropertySchema>;
 export type updatePropertyInput = z.infer<typeof updatePropertySchema>;
 export type addMediaInput = z.infer<typeof addMediaSchema>;
+export type filterPropertiesInput = z.infer<typeof filterPropertiesSchema>;

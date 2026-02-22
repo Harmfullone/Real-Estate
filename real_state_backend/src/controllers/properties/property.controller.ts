@@ -1,6 +1,6 @@
 import { prisma } from "../../config/prisma";
 import { Request, Response } from "express";
-import { addMediaInput, addPropertySchema, updatePropertySchema, addDraftPropertySchema } from "../../validators/property.validators";
+import { addMediaInput, addPropertySchema, updatePropertySchema, addDraftPropertySchema, filterPropertiesSchema } from "../../validators/property.validators";
 import z from "zod";
 
 type Params = {
@@ -440,4 +440,184 @@ export async function changeStatus(req:Request<Params>,res:Response){
     }
 };
 
+// Filter Properties
+export async function filterProperties(req: Request, res: Response) {
+    try {
+        type FilterPropertiesInput = z.infer<typeof filterPropertiesSchema>;
+        const filters = req.query as unknown as FilterPropertiesInput;
+        
+        const {
+            category,
+            propertyType,
+            furnishingStatus,
+            priceMin,
+            priceMax,
+            state,
+            city,
+            locality,
+            availabilityStatus,
+            ageOfProperty,
+            numberOfRooms,
+            numberOfBathrooms,
+            propertyFacing,
+            carpetAreaMin,
+            carpetAreaMax,
+            carpetAreaUnit,
+            sortBy = 'created_desc',
+            page = 1,
+            limit = 10,
+        } = filters;
 
+        // Build the where clause
+        const where: any = {
+            status: {
+                in: ['ACTIVE'] // Only show active properties in filters
+            }
+        };
+
+        // Category filter
+        if (category && category.length > 0) {
+            where.category = { in: category };
+        }
+
+        // Property Type filter
+        if (propertyType && propertyType.length > 0) {
+            where.propertyType = { in: propertyType };
+        }
+
+        // Furnishing Status filter
+        if (furnishingStatus && furnishingStatus.length > 0) {
+            where.furnishingStatus = { in: furnishingStatus };
+        }
+
+        // Price Range filter
+        if (priceMin !== undefined || priceMax !== undefined) {
+            where.listingPrice = {};
+            if (priceMin !== undefined) {
+                where.listingPrice.gte = priceMin;
+            }
+            if (priceMax !== undefined) {
+                where.listingPrice.lte = priceMax;
+            }
+        }
+
+        // Location filters
+        if (state) {
+            where.state = { contains: state, mode: 'insensitive' };
+        }
+        if (city) {
+            where.city = { contains: city, mode: 'insensitive' };
+        }
+        if (locality) {
+            where.locality = { contains: locality, mode: 'insensitive' };
+        }
+
+        // Availability Status filter
+        if (availabilityStatus && availabilityStatus.length > 0) {
+            where.availabilityStatus = { in: availabilityStatus };
+        }
+
+        // Age of Property filter
+        if (ageOfProperty && ageOfProperty.length > 0) {
+            where.ageOfProperty = { in: ageOfProperty };
+        }
+
+        // Number of Rooms filter
+        if (numberOfRooms !== undefined) {
+            where.numberOfRooms = { gte: numberOfRooms };
+        }
+
+        // Number of Bathrooms filter
+        if (numberOfBathrooms !== undefined) {
+            where.numberOfBathrooms = { gte: numberOfBathrooms };
+        }
+
+        // Property Facing filter
+        if (propertyFacing && propertyFacing.length > 0) {
+            where.propertyFacing = { in: propertyFacing };
+        }
+
+        // Carpet Area filter
+        if (carpetAreaMin !== undefined || carpetAreaMax !== undefined) {
+            where.carpetArea = {};
+            if (carpetAreaMin !== undefined) {
+                where.carpetArea.gte = carpetAreaMin;
+            }
+            if (carpetAreaMax !== undefined) {
+                where.carpetArea.lte = carpetAreaMax;
+            }
+        }
+        if (carpetAreaUnit) {
+            where.carpetAreaUnit = carpetAreaUnit;
+        }
+
+        // Sorting logic
+        let orderBy: any = {};
+        switch (sortBy) {
+            case 'price_asc':
+                orderBy = { listingPrice: 'asc' };
+                break;
+            case 'price_desc':
+                orderBy = { listingPrice: 'desc' };
+                break;
+            case 'created_asc':
+                orderBy = { createdAt: 'asc' };
+                break;
+            case 'created_desc':
+            default:
+                orderBy = { createdAt: 'desc' };
+                break;
+        }
+
+        // Pagination
+        const skip = (page - 1) * limit;
+
+        // Execute the query
+        const [properties, totalCount] = await Promise.all([
+            prisma.property.findMany({
+                where,
+                orderBy,
+                skip,
+                take: limit,
+                include: {
+                    media: {
+                        orderBy: { order: 'asc' }
+                    },
+                    user: {
+                        select: {
+                            id: true,
+                            firstName: true,
+                            lastName: true,
+                            email: true,
+                            phone: true,
+                            avatar: true
+                        }
+                    }
+                }
+            }),
+            prisma.property.count({ where })
+        ]);
+
+        const totalPages = Math.ceil(totalCount / limit);
+
+        return res.status(200).json({
+            success: true,
+            data: properties,
+            pagination: {
+                currentPage: page,
+                totalPages,
+                totalCount,
+                limit,
+                hasNextPage: page < totalPages,
+                hasPreviousPage: page > 1
+            }
+        });
+
+    } catch (error) {
+        console.error("Filter properties error:", error);
+        return res.status(500).json({ 
+            success: false,
+            message: "Internal server error" 
+        });
+    }
+}
