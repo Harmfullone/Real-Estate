@@ -1,14 +1,19 @@
-import { ManagementTable } from "@/components/role_management/managementTable";
-import axios from "axios";
+// import axios from "axios";
 import {columns} from "@/components/role_management/columns";
-import { RoleManagement } from "@/components/role_management/columns";
 import {DataTable} from "@/components/role_management/data-table";
+import { type RoleManagement } from "@/components/role_management/columns";
 
 async function getRoleManagement(): Promise<RoleManagement[]> {
-    // const response = await fetch("https://api.example.com/role-management")
+    // const response = await axios.get("https://api.example.com/role-management")
     // const data = await response.json()
     // return data
     return [
+        {
+            username: "Uday Kumar",
+            email: "uday@example.com",
+            role: "Super Admin",
+            blockDate: "2021-01-01",
+        },
         {
             username: "John Doe",
             email: "john.doe@example.com",

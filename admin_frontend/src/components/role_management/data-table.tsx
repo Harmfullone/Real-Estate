@@ -1,10 +1,10 @@
 "use client"
 
 import {
-    ColumnDef,
     flexRender,
     getCoreRowModel,
     useReactTable,
+    getPaginationRowModel,
 } from "@tanstack/react-table"
 
 import {
@@ -14,7 +14,6 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-    getPaginationRowModel,
 } from "@/components/ui/table"
 
 export function DataTable<TData, TValue>({
