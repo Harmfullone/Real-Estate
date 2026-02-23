@@ -58,7 +58,7 @@ const items = [
     { title: "Requirement Board", url: "#", icon: ClipboardList },
     { title: "Financials", url: "#", icon: WalletIcon },
     { title: "Banner Management", url: "#", icon: Image },
-    { title: "Role Management", url: "#", icon: UserCog },
+    { title: "Role Management", url: "/role-management", icon: UserCog },
 ]
 
 export const AppSidebar = () => {
