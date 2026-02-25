@@ -82,8 +82,8 @@ export function UserActionsAndDetails({ user }: { user: UserActionsAndDetailsInt
                         </div>
                     </div>
                 </div>
+                <UserSellingHistory />
             </div>
-            <UserSellingHistory />
         </div>
     )
 }
