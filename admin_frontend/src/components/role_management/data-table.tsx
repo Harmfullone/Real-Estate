@@ -26,10 +26,10 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { Search,PenLineIcon } from "lucide-react";
+import { Search, PenLineIcon } from "lucide-react";
 import { Button } from "../ui/button";
 
-import { DataTablePagination } from "./data-table-pagination"
+import { DataTablePagination } from "../ui/data-table-pagination"
 import { ExportButton } from "./exportButton";
 import { useRouter } from "next/navigation";
 
@@ -65,25 +65,27 @@ export function DataTable<TData, TValue>({
 
     return (
         <div>
-            <div className="flex items-center py-4 gap-8">
-                <h1 className="font-medium text-[20px] p-2 ">Admin Staff</h1>
+            <div className="flex items-center py-4 gap-8 justify-between">
+                <h1 className="font-medium text-[20px] p-2 pl-4">Admin Staff</h1>
                 {/* Search Input Box  */}
-                <div className="relative w-full max-w-md">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-blue-500" />
-                    <Input
-                        placeholder="Search Anything"
-                        value={globalFilter}
-                        onChange={(e) => setGlobalFilter(e.target.value)}
-                        className="h-10 pl-9 border-2 bg-white"
-                    />
+                <div className="flex items-center gap-4">
+                    <div className="relative w-full max-w-md">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-blue-500" />
+                        <Input
+                            placeholder="Search Anything"
+                            value={globalFilter}
+                            onChange={(e) => setGlobalFilter(e.target.value)}
+                            className="h-10 pl-9 border-2 bg-white"
+                        />
+                    </div>
+                    <ExportButton />
+                    <Button onClick={() => {
+                        router.push("/role-management/add-new-staff");
+                    }}>
+                        <PenLineIcon className="size-4 " />
+                        Add New Staff
+                    </Button>
                 </div>
-                <ExportButton />
-                <Button onClick={() => {
-                    router.push("/role-management/add-new-staff");
-                }}>
-                    <PenLineIcon className="size-4 " />
-                    Add New Staff
-                </Button>
             </div>
             <div className="overflow-hidden rounded-md border">
                 <Table>

@@ -2,30 +2,19 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
-import { Eye, Pencil, Trash2, OctagonMinus, BadgeCheck, ShieldCheck, Clock, Gem,ArrowUpDown } from "lucide-react"
+import { Eye, Pencil, Trash2, OctagonMinus,ArrowUpDown } from "lucide-react"
 
-export enum KYCStatus {
-    Verified = "Verified",
-    Pending = "Pending",
-}
 
-export type UserColumnInterface = {
+export type BlockedUserColumnInterface = {
     username: string
     email: string
-    gems: number
-    kycStatus: string
-    isVerified: boolean
-    propertyListings: {
-        total: number
-        sold: number
-        active: number
-        unlisted: number
-    }
-    isBlocked: boolean
     role: string
+    blockedOn: string
+    blockedBy: string
+    isBlocked: boolean
 }
 
-export const BlockedUsersColumns: ColumnDef<UserColumnInterface>[] = [
+export const BlockedUsersColumns: ColumnDef<BlockedUserColumnInterface>[] = [
     {
         accessorKey: "username",
         header: ({ column }) => {
@@ -40,12 +29,11 @@ export const BlockedUsersColumns: ColumnDef<UserColumnInterface>[] = [
             )
         },
         cell: ({ row }) => {
-            const { username, isBlocked, isVerified } = row.original
+            const { username, isBlocked } = row.original
             return (
                 <div className="flex items-center gap-2 pl-2">
                     <span className={`size-2 rounded-full shrink-0 ${isBlocked ? "bg-red-500" : "bg-green-500"}`} />
                     <span className="font-medium">{username}</span>
-                    {isVerified && <BadgeCheck className="size-5 fill-blue-500 text-white " />}
                 </div>
             )
         },
@@ -70,51 +58,24 @@ export const BlockedUsersColumns: ColumnDef<UserColumnInterface>[] = [
         accessorKey: "role",
         header: "Role",
         cell: ({ row }) => {
-            const user = row.original
-            return <div className="font-semibold text-blue-500">{user.role}</div>
+            const role = row.original.role;
+            return <div className="font-semibold text-blue-500">{role}</div>
         },
     },
-
     {
-        accessorKey: "gems",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Gems
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
-        },
-        cell: ({ row }) => (
-            <div className="flex items-center gap-1.5 font-semibold text-green-600">
-                <span className="text-orange-500"><Gem className="size-4 text-green-400" /></span>
-                <p className="text-black font-medium">
-                    {row.original.gems.toLocaleString()}
-                </p>
-            </div>
-        ),
-    },
-
-    {
-        accessorKey: "kycStatus",
-        header: "KYC Status",
+        accessorKey: "blockedOn",
+        header: "Blocked On",
         cell: ({ row }) => {
-            const kycStatus = row.original.kycStatus;
-
-            return (
-                <div className={`flex items-center gap-1.5 font-medium}`}>
-                    {kycStatus == "Verified"
-                        ? <ShieldCheck className="size-4 text-green-600" />
-                        : <Clock className="size-4 text-orange-500" />
-                    }
-                    <p className="text-foreground font-medium">
-                        {kycStatus}
-                    </p>
-                </div>
-            )
+            const user = row.original
+            return <div className="font-medium ">{user.blockedOn}</div>
+        },
+    },
+    {
+        accessorKey: "blockedBy",
+        header: "Blocked By",
+        cell: ({ row }) => {
+            const user = row.original
+            return <div className="font-medium ">{user.blockedBy}</div>
         },
     },
 

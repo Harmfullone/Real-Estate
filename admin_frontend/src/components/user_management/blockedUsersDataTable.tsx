@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/table"
 import { Search, SlidersHorizontal, ArrowUpDown, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { DataTablePagination } from "@/components/role_management/data-table-pagination"
+import { DataTablePagination } from "@/components/ui/data-table-pagination"
 import { ExportButton } from "@/components/role_management/exportButton"
 
 interface DataTableProps<TData, TValue> {
@@ -61,28 +61,30 @@ export function BlockedUsersDataTable<TData, TValue>({
 
     return (
         <div>
-            <div className="flex items-center py-4 gap-4">
-                <h1 className="font-semibold text-xl whitespace-nowrap">Users</h1>
-                <div className="relative w-full max-w-md">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-400" />
-                    <Input
-                        placeholder="Search anything"
-                        value={globalFilter}
-                        onChange={(e) => setGlobalFilter(e.target.value)}
-                        className="h-10 pl-9 border-2 bg-white"
-                    />
+            <div className="flex justify-between items-center py-4 gap-4">
+                <h1 className="font-semibold text-xl whitespace-nowrap pl-4">Users</h1>
+                <div className="flex items-center gap-4">
+                    <div className="relative w-full max-w-md">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-400" />
+                        <Input
+                            placeholder="Search anything"
+                            value={globalFilter}
+                            onChange={(e) => setGlobalFilter(e.target.value)}
+                            className="h-10 pl-9 border-2 bg-white"
+                        />
+                    </div>
+                    <ExportButton />
+                    <Button variant="outline" className="gap-2 shadow-none border-2 h-10">
+                        <SlidersHorizontal className="size-4" />
+                        Filters
+                        <ChevronDown className="size-4" />
+                    </Button>
+                    <Button variant="outline" className="gap-2 shadow-none border-2 h-10">
+                        <ArrowUpDown className="size-4" />
+                        Sort by
+                        <ChevronDown className="size-4" />
+                    </Button>
                 </div>
-                <ExportButton />
-                <Button variant="outline" className="gap-2 shadow-none border-2 h-10">
-                    <SlidersHorizontal className="size-4" />
-                    Filters
-                    <ChevronDown className="size-4" />
-                </Button>
-                <Button variant="outline" className="gap-2 shadow-none border-2 h-10">
-                    <ArrowUpDown className="size-4" />
-                    Sort by
-                    <ChevronDown className="size-4" />
-                </Button>
             </div>
             <div className="overflow-hidden rounded-md border">
                 <Table>
@@ -90,7 +92,7 @@ export function BlockedUsersDataTable<TData, TValue>({
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow className="bg-[#F1F7FE]" key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => (
-                                    <TableHead className="font-medium text-sm" key={header.id}>
+                                    <TableHead className="font-medium text-sm px-2" key={header.id}>
                                         {header.isPlaceholder
                                             ? null
                                             : flexRender(
