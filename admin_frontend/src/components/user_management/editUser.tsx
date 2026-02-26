@@ -1,5 +1,5 @@
 "use client"
-
+import { useRef, useState } from "react"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "../ui/card"
 import { FieldLabel } from "../ui/field"
 import { Input } from "../ui/input"
@@ -8,6 +8,46 @@ import { Button } from "@/components/ui/button"
 import { X, Pencil, OctagonMinus, XIcon, Upload, ImageIcon } from "lucide-react"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
+
+export default function AvatarUpload() {
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const [preview, setPreview] = useState<string | null>(null);
+    const handleClick = () => {
+        fileInputRef.current?.click();
+    }
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const imageUrl = URL.createObjectURL(file);
+            setPreview(imageUrl);
+        }
+    }
+    return (
+        <div className="flex justify-center items-center">
+            <div
+                onClick={handleClick}
+                className="h-28 w-28 rounded-full border-2 overflow-hidden flex items-center justify-center cursor-pointer hover:opacity-80 transition border-black"
+            >
+                {preview ? (
+                    <img src={preview} alt="Preview" className="h-full w-full object-cover" />
+
+                ) : (
+                    <ImageIcon className="size-5 text-zinc-500" />
+                )}
+            </div>
+
+            <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                accept="image/*"
+                className="hidden"
+            />
+        </div>
+    )
+
+}
+
 
 export function EditUser() {
     return (
@@ -31,11 +71,7 @@ export function EditUser() {
                         {/* Left Column — Personal Information */}
                         <div className="space-y-5">
                             <div className="space-y-4">
-                                <div className="flex justify-center items-center cursor-pointer">
-                                    <div className="h-28 w-28 rounded-full border-2 flex items-center justify-center">
-                                        <ImageIcon className="size-5 text-zinc-500" />
-                                    </div>
-                                </div>
+                                <AvatarUpload />
                                 <div className="flex font-medium text-zinc-500 justify-center items-center gap-2">
                                     <Upload className="size-5" />
                                     <p> Upload Image</p>
