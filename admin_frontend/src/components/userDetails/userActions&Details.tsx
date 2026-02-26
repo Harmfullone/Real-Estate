@@ -1,7 +1,7 @@
 import { Building2, Gem, Handshake, IndianRupee, Mail, PenLine, PhoneCallIcon, Verified } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
-import { OctagonMinus } from "lucide-react";
+import { OctagonMinus,BadgeCheck } from "lucide-react";
 import { UserSellingHistory } from "./userSellingHistory";
 
 export type UserActionsAndDetailsInterface = {
@@ -26,7 +26,7 @@ export function UserActionsAndDetails() {
                     <div className="font-bold text-xl">
                         John Doe
                     </div>
-                    <Verified />
+                    <BadgeCheck className="size-8 fill-blue-500 text-white " />
                 </div>
             </div>
             <div className="flex gap-2 items-center flex-wrap">
@@ -56,28 +56,28 @@ export function UserActionsAndDetails() {
                         <div className="flex flex-col gap-1">
                             <Gem className="size-5 text-green-500" />
                             <p className="text-lg font-bold">151,752</p>
-                            <p className="text-[12px]">Gems in Wallet</p>
+                            <p className="text-[12px] font-medium">Gems in Wallet</p>
                         </div>
                     </div>
                     <div className="border-2 p-2 px-3 rounded-md bg-white">
                         <div className="flex flex-col gap-1">
                             <Building2 className="size-5 text-green-500" />
                             <p className="text-lg font-bold">10</p>
-                            <p className="text-[12px]">Total Properties</p>
+                            <p className="text-[12px] font-medium">Total Properties</p>
                         </div>
                     </div>
                     <div className="border-2 p-2 px-3 rounded-md bg-white">
                         <div className="flex flex-col gap-1">
                             <Handshake className="size-5 text-blue-500" />
                             <p className="text-lg font-bold">4</p>
-                            <p className="text-[12px]">Sold to RealBro</p>
+                            <p className="text-[12px] font-medium">Sold to RealBro</p>
                         </div>
                     </div>
                     <div className="border-2 p-2 px-3 rounded-md bg-white">
                         <div className="flex flex-col gap-1">
                             <IndianRupee className="size-5 text-green-500" />
                             <p className="text-lg font-bold">1.2 Cr</p>
-                            <p className="text-[12px]">Prop. Worth</p>
+                            <p className="text-[12px] font-medium">Prop. Worth</p>
                         </div>
                     </div>
                 </div>
