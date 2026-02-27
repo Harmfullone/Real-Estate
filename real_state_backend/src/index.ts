@@ -12,7 +12,10 @@ import uploadRoutes from "./routes/upload/upload.route"
 import supportRoutes from "./routes/support/support.route"
 import savedPropertyRoutes from "./routes/savedProperty/savedProperty.route"
 import metadataRoutes from "./routes/metadata/metadata.route"
-dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+dotenv.config({ path: join(process.cwd(), '.env') });
 
 const app = express();
 app.use(express.json())
