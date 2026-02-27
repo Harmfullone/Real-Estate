@@ -83,7 +83,10 @@ export async function getAppointments(req: Request, res: Response) {
             return res.status(401).json({ message: "Unauthorized User" });
         }
 
-        const { page, limit, status, propertyId } = req.query as unknown as GetAppointmentsQueryInput;
+        const query = req.query as unknown as GetAppointmentsQueryInput;
+        const page = Number(query.page) || 1;
+        const limit = Number(query.limit) || 10;
+        const { status, propertyId } = query;
 
         // Build where clause
         const where: any = { userId };
@@ -380,8 +383,11 @@ export async function getPropertyAppointments(req: Request, res: Response) {
             return res.status(401).json({ message: "Unauthorized User" });
         }
 
-        const { propertyId } = req.params;
-        const { page = 1, limit = 10, status } = req.query as any;
+        const { propertyId } = req.params as { propertyId: string };
+        const query = req.query as any;
+        const page = Number(query.page) || 1;
+        const limit = Number(query.limit) || 10;
+        const status = query.status;
 
         // Check if property exists
         const property = await prisma.property.findUnique({
