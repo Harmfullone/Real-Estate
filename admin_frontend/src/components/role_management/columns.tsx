@@ -2,6 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 import { Eye, Pencil, Trash2, OctagonMinus } from "lucide-react"
 import { ArrowUpDown } from "lucide-react"
 
@@ -83,14 +84,12 @@ export const columns: ColumnDef<RoleManagement>[] = [
                     >
                         <Eye className="size-4" />
                     </Button>
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8 text-amber-600 hover:text-amber-800 hover:bg-amber-100"
-                        onClick={() => console.log("Edit", user)}
+                    <Link
+                        href={`/role-management/edit-staff/1`}
+                        className="inline-flex items-center justify-center h-8 w-8 rounded-md text-amber-600 hover:text-amber-800 hover:bg-amber-100"
                     >
                         <Pencil className="size-4" />
-                    </Button>
+                    </Link>
                     <Button
                         variant="ghost"
                         size="icon"

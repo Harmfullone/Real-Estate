@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import {
@@ -62,6 +63,7 @@ export function PropertyCard({ property, variant = "default", onEdit, onBuy, onM
     return (
         <Card className="border py-0 gap-0 overflow-hidden">
             <div className="relative">
+                <Link href={`/property/1`}>
                 <Image
                     src={property.imageUrl}
                     alt={property.title}
@@ -69,6 +71,7 @@ export function PropertyCard({ property, variant = "default", onEdit, onBuy, onM
                     height={200}
                     className="w-full h-44 object-cover"
                 />
+                </Link>
                 <div className="absolute top-3 left-3 flex items-center gap-1.5">
                     <span className={`${statusColors[property.status]} text-white text-[10px] font-semibold px-2 py-0.5 rounded-full flex items-center gap-1`}>
                         <span className="w-1.5 h-1.5 bg-white rounded-full" />
