@@ -4,16 +4,17 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { PendingApprovalCard, PendingApprovalData } from "./pendingApprovalCard"
 
 interface PendingApprovalListProps {
+    title?: string
     approvals: PendingApprovalData[]
     onClick?: (id: string) => void
 }
 
-export function PendingApprovalList({ approvals, onClick }: PendingApprovalListProps) {
+export function PendingApprovalList({ title = "Pending Property Approvals", approvals, onClick }: PendingApprovalListProps) {
     return (
         <Card className="border py-0 gap-0 h-full">
             <CardHeader className="px-4 py-3">
                 <CardTitle className="text-base font-semibold">
-                    Pending Property Approvals
+                    {title}
                 </CardTitle>
             </CardHeader>
             <CardContent className="px-2 pb-2">

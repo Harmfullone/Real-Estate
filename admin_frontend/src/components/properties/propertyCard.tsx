@@ -17,6 +17,7 @@ import {
     ShoppingCart,
     CheckCircle,
     Gem,
+    Crown,
 } from "lucide-react"
 
 export interface PropertyCardData {
@@ -83,8 +84,15 @@ export function PropertyCard({ property, variant = "default", onEdit, onBuy, onM
                         <MoreVertical className="size-3.5 text-white" />
                     </button>
                 </div>
-                {property.isFeatured && property.gems && (
-                    <div className="absolute bottom-3 left-3">
+                <div className="absolute bottom-3 left-3 flex items-center gap-1.5">
+                    {isExclusive && (
+                        <span className="bg-blue-600 text-white text-[10px] font-semibold p-1 rounded-md">
+                            <Crown className="size-3.5" />
+                        </span>
+                    )}
+                </div>
+                {property.gems && (
+                    <div className="absolute bottom-3 right-3">
                         <span className="bg-amber-500 text-white text-[10px] font-semibold px-2 py-0.5 rounded-md flex items-center gap-1">
                             <Gem className="size-3" />
                             {property.gems.toLocaleString()}
@@ -146,7 +154,17 @@ export function PropertyCard({ property, variant = "default", onEdit, onBuy, onM
                         <Pencil className="size-3 mr-1" />
                         Edit
                     </Button>
-                    {property.status === "Active" ? (
+                    {isExclusive ? (
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            className="flex-1 h-8 text-[11px] text-green-600 border-green-200 hover:bg-green-50"
+                            onClick={() => onMarkAsSold?.(property.id)}
+                        >
+                            <CheckCircle className="size-3 mr-1" />
+                            Mark as Sold
+                        </Button>
+                    ) : property.status === "Active" ? (
                         <Button
                             variant="outline"
                             size="sm"
