@@ -1,16 +1,17 @@
 "use client"
 
-import { PropertyCard, PropertyCardData } from "./propertyCard"
+import { PropertyCard, PropertyCardData, PropertyCardVariant } from "./propertyCard"
 
 interface PropertyGridProps {
     properties: PropertyCardData[]
+    variant?: PropertyCardVariant
     onEdit?: (id: string) => void
     onBuy?: (id: string) => void
     onMarkAsSold?: (id: string) => void
     onFavorite?: (id: string) => void
 }
 
-export function PropertyGrid({ properties, onEdit, onBuy, onMarkAsSold, onFavorite }: PropertyGridProps) {
+export function PropertyGrid({ properties, variant = "default", onEdit, onBuy, onMarkAsSold, onFavorite }: PropertyGridProps) {
     return (
         <div className="overflow-y-auto pr-2" style={{ maxHeight: "calc(100vh - 140px)" }}>
             <div className="grid grid-cols-2 gap-4">
@@ -18,6 +19,7 @@ export function PropertyGrid({ properties, onEdit, onBuy, onMarkAsSold, onFavori
                     <PropertyCard
                         key={property.id}
                         property={property}
+                        variant={variant}
                         onEdit={onEdit}
                         onBuy={onBuy}
                         onMarkAsSold={onMarkAsSold}
